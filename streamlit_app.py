@@ -408,18 +408,24 @@ def make_multi_line_chart(
 
 
 def inject_custom_css():
-    base = st.get_option("theme.base") or "light"
-    section_title_color = "#C7C7C7" if base == "dark" else "#5E5E5E"
-    table_title_color = "#BBBBBB" if base == "dark" else "#666666"
+    neutral_text_color = "#8B93A1"
     css = """
         <style>
+        .stApp p,
+        .stApp li,
+        .stApp label,
+        .stApp span,
+        .stCaption,
+        .stCaption * {
+            color: __NEUTRAL_TEXT_COLOR__ !important;
+        }
         .mf-section-title {
             font-size: 2rem;
             font-weight: 700;
             line-height: 1.2;
             margin-top: 1.1rem;
             margin-bottom: 0.7rem;
-            color: __SECTION_TITLE_COLOR__ !important;
+            color: __NEUTRAL_TEXT_COLOR__ !important;
             border-left: 6px solid var(--accent);
             padding: 0.18rem 0 0.18rem 0.7rem;
             border-radius: 2px;
@@ -428,7 +434,7 @@ def inject_custom_css():
             font-size: 1.08rem;
             font-weight: 700;
             margin: 0.65rem 0 0.25rem 0;
-            color: __TABLE_TITLE_COLOR__ !important;
+            color: __NEUTRAL_TEXT_COLOR__ !important;
         }
         .mf-table-wrap {
             width: 100%;
@@ -448,24 +454,26 @@ def inject_custom_css():
             font-size: 0.89rem;
             white-space: nowrap;
         }
-        .mf-table-wrap.profile th { background: #16324F; color: #F8FAFC; }
-        .mf-table-wrap.profile tbody tr:nth-child(odd) td { background: #E9F2FA; color: #1E293B; }
-        .mf-table-wrap.profile tbody tr:nth-child(even) td { background: #F4F8FC; color: #1E293B; }
+        .mf-table-wrap.profile th { background: #16324F; color: __NEUTRAL_TEXT_COLOR__ !important; }
+        .mf-table-wrap.profile tbody tr:nth-child(odd) td { background: #E9F2FA; color: __NEUTRAL_TEXT_COLOR__ !important; }
+        .mf-table-wrap.profile tbody tr:nth-child(even) td { background: #F4F8FC; color: __NEUTRAL_TEXT_COLOR__ !important; }
 
-        .mf-table-wrap.stock th { background: #0F766E; color: #ECFEFF; }
-        .mf-table-wrap.stock tbody tr:nth-child(odd) td { background: #D1FAE5; color: #1F2937; }
-        .mf-table-wrap.stock tbody tr:nth-child(even) td { background: #ECFDF5; color: #1F2937; }
+        .mf-table-wrap.stock th { background: #0F766E; color: __NEUTRAL_TEXT_COLOR__ !important; }
+        .mf-table-wrap.stock tbody tr:nth-child(odd) td { background: #D1FAE5; color: __NEUTRAL_TEXT_COLOR__ !important; }
+        .mf-table-wrap.stock tbody tr:nth-child(even) td { background: #ECFDF5; color: __NEUTRAL_TEXT_COLOR__ !important; }
 
-        .mf-table-wrap.financial th { background: #92400E; color: #FFF7ED; }
-        .mf-table-wrap.financial tbody tr:nth-child(odd) td { background: #FFEDD5; color: #3F3F46; }
-        .mf-table-wrap.financial tbody tr:nth-child(even) td { background: #FFF7ED; color: #3F3F46; }
+        .mf-table-wrap.financial th { background: #92400E; color: __NEUTRAL_TEXT_COLOR__ !important; }
+        .mf-table-wrap.financial tbody tr:nth-child(odd) td { background: #FFEDD5; color: __NEUTRAL_TEXT_COLOR__ !important; }
+        .mf-table-wrap.financial tbody tr:nth-child(even) td { background: #FFF7ED; color: __NEUTRAL_TEXT_COLOR__ !important; }
 
-        .mf-table-wrap.industry th { background: #4C1D95; color: #F5F3FF; }
-        .mf-table-wrap.industry tbody tr:nth-child(odd) td { background: #EDE9FE; color: #334155; }
-        .mf-table-wrap.industry tbody tr:nth-child(even) td { background: #F5F3FF; color: #334155; }
+        .mf-table-wrap.industry th { background: #4C1D95; color: __NEUTRAL_TEXT_COLOR__ !important; }
+        .mf-table-wrap.industry tbody tr:nth-child(odd) td { background: #EDE9FE; color: __NEUTRAL_TEXT_COLOR__ !important; }
+        .mf-table-wrap.industry tbody tr:nth-child(even) td { background: #F5F3FF; color: __NEUTRAL_TEXT_COLOR__ !important; }
         </style>
         """
-    css = css.replace("__SECTION_TITLE_COLOR__", section_title_color).replace("__TABLE_TITLE_COLOR__", table_title_color)
+    css = (
+        css.replace("__NEUTRAL_TEXT_COLOR__", neutral_text_color)
+    )
     st.markdown(
         css,
         unsafe_allow_html=True,
@@ -473,7 +481,7 @@ def inject_custom_css():
 
 
 def render_section_title(number, title, accent_color, text_color=None):
-    extra_style = f" color: {text_color};" if text_color else ""
+    extra_style = f" color: {text_color};" if text_color else " color: #8B93A1;"
     st.markdown(
         f'<div class="mf-section-title" style="--accent: {accent_color};{extra_style}">{number}. {title}</div>',
         unsafe_allow_html=True,
@@ -496,7 +504,7 @@ def build_excel(info_df, stock_df, financial_df, industry_df, ticker, year):
         if stock_df is not None and not stock_df.empty:
             stock_df.to_excel(writer, sheet_name="Stock_Data", index=False)
         if financial_df is not None and not financial_df.empty:
-            financial_df.to_excel(writer, sheet_name="Financial_DuPont", index=False)
+            financial_df.to_excel(writer, sheet_name="finance", index=False)
         if industry_df is not None and not industry_df.empty:
             industry_df.to_excel(writer, sheet_name="Industry_Avg", index=False)
     output.seek(0)
@@ -540,8 +548,8 @@ def render_app():
     st.set_page_config(page_title="Max Finance", layout="wide")
     inject_custom_css()
     st.title("Max Finance")
-    st.caption("Enhanced visualization edition with dynamic metric selectors and 2015-2024 long-range analysis.")
-    section_text_color = "#C7C7C7" if (st.get_option("theme.base") or "light") == "dark" else "#5E5E5E"
+    st.caption("A Python-based WRDS-powered U.S. equity data retrieval platform.")
+    section_text_color = "#8B93A1"
 
     if "default_ticker" not in st.session_state:
         st.session_state.default_ticker = random.choice(DEFAULT_TICKER_POOL)

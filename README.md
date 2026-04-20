@@ -1,5 +1,7 @@
 # Max Finance
 
+A Python-based WRDS-powered U.S. equity data retrieval platform.
+
 Max Finance is a WRDS-based financial analysis toolkit delivered in two interfaces:
 
 1. Web App (Streamlit)
@@ -132,10 +134,10 @@ This section combines functional usage and export behavior in one workflow-orien
 ### 3.4 Export Specification
 - File name: `{TICKER}_{YEAR}_Full_Data.xlsx`
 - Workbook sheets (when data exists):
-  - `Company_SIC`
-  - `Stock_Data`
-  - `Financial_DuPont`
-  - `Industry_Avg`
+	- `Company_SIC`
+	- `Stock_Data`
+	- `finance`
+	- `Industry_Avg`
 
 ### 3.5 Operational Notes
 1. Year selector affects stock module only.
