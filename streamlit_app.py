@@ -411,8 +411,7 @@ def inject_custom_css():
     base = st.get_option("theme.base") or "light"
     section_title_color = "#E7EDF7" if base == "dark" else "#000000"
     table_title_color = "#E7EDF7" if base == "dark" else "#111827"
-    st.markdown(
-        f"""
+    css = """
         <style>
         .mf-section-title {
             font-size: 2rem;
@@ -420,7 +419,7 @@ def inject_custom_css():
             line-height: 1.2;
             margin-top: 1.1rem;
             margin-bottom: 0.7rem;
-            color: {section_title_color};
+            color: __SECTION_TITLE_COLOR__;
             border-left: 6px solid var(--accent);
             padding: 0.18rem 0 0.18rem 0.7rem;
             border-radius: 2px;
@@ -429,7 +428,7 @@ def inject_custom_css():
             font-size: 1.08rem;
             font-weight: 700;
             margin: 0.65rem 0 0.25rem 0;
-            color: {table_title_color};
+            color: __TABLE_TITLE_COLOR__;
         }
         .mf-table-wrap {
             width: 100%;
@@ -465,7 +464,10 @@ def inject_custom_css():
         .mf-table-wrap.industry tbody tr:nth-child(odd) td { background: #EDE9FE; color: #334155; }
         .mf-table-wrap.industry tbody tr:nth-child(even) td { background: #F5F3FF; color: #334155; }
         </style>
-        """,
+        """
+    css = css.replace("__SECTION_TITLE_COLOR__", section_title_color).replace("__TABLE_TITLE_COLOR__", table_title_color)
+    st.markdown(
+        css,
         unsafe_allow_html=True,
     )
 
