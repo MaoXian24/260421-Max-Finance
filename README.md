@@ -258,7 +258,7 @@ This section explains the internal implementation logic and highlights the desig
 ---
 
 <details>
-<summary>中文说明（默认折叠）</summary>
+<summary>中文说明</summary>
 
 ### 1. 项目范围
 
