@@ -409,8 +409,8 @@ def make_multi_line_chart(
 
 def inject_custom_css():
     base = st.get_option("theme.base") or "light"
-    section_title_color = "#E7EDF7" if base == "dark" else "#000000"
-    table_title_color = "#E7EDF7" if base == "dark" else "#111827"
+    section_title_color = "#C7C7C7" if base == "dark" else "#5E5E5E"
+    table_title_color = "#BBBBBB" if base == "dark" else "#666666"
     css = """
         <style>
         .mf-section-title {
@@ -419,7 +419,7 @@ def inject_custom_css():
             line-height: 1.2;
             margin-top: 1.1rem;
             margin-bottom: 0.7rem;
-            color: __SECTION_TITLE_COLOR__;
+            color: __SECTION_TITLE_COLOR__ !important;
             border-left: 6px solid var(--accent);
             padding: 0.18rem 0 0.18rem 0.7rem;
             border-radius: 2px;
@@ -428,7 +428,7 @@ def inject_custom_css():
             font-size: 1.08rem;
             font-weight: 700;
             margin: 0.65rem 0 0.25rem 0;
-            color: __TABLE_TITLE_COLOR__;
+            color: __TABLE_TITLE_COLOR__ !important;
         }
         .mf-table-wrap {
             width: 100%;
@@ -541,7 +541,7 @@ def render_app():
     inject_custom_css()
     st.title("Max Finance")
     st.caption("Enhanced visualization edition with dynamic metric selectors and 2015-2024 long-range analysis.")
-    section_text_color = "#9CA3AF" if (st.get_option("theme.base") or "light") == "dark" else "#374151"
+    section_text_color = "#C7C7C7" if (st.get_option("theme.base") or "light") == "dark" else "#5E5E5E"
 
     if "default_ticker" not in st.session_state:
         st.session_state.default_ticker = random.choice(DEFAULT_TICKER_POOL)
