@@ -136,7 +136,7 @@ This section combines functional usage and export behavior in one workflow-orien
 - Workbook sheets (when data exists):
 	- `Company_SIC`
 	- `Stock_Data`
-	- `finance`
+	- `Finance_Data`
 	- `Industry_Avg`
 
 ### 3.5 Operational Notes

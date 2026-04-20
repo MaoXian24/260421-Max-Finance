@@ -411,7 +411,7 @@ def inject_custom_css():
     base = st.get_option("theme.base") or "light"
     section_title_color = "#D1D5DB" if base == "dark" else "#6B7280"
     table_title_color = "#D1D5DB" if base == "dark" else "#6B7280"
-    table_header_text_color = "#E5E7EB" if base == "dark" else "#4B5563"
+    table_header_text_color = "#FFFFFF"
     table_body_text_color = "#4B5563"
     css = """
         <style>
@@ -503,7 +503,7 @@ def build_excel(info_df, stock_df, financial_df, industry_df, ticker, year):
         if stock_df is not None and not stock_df.empty:
             stock_df.to_excel(writer, sheet_name="Stock_Data", index=False)
         if financial_df is not None and not financial_df.empty:
-            financial_df.to_excel(writer, sheet_name="finance", index=False)
+            financial_df.to_excel(writer, sheet_name="Finance_Data", index=False)
         if industry_df is not None and not industry_df.empty:
             industry_df.to_excel(writer, sheet_name="Industry_Avg", index=False)
     output.seek(0)

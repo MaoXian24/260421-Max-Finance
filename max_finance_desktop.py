@@ -946,7 +946,7 @@ class StockAnalysisApp:
                 if self.stock_df is not None and not self.stock_df.empty:
                     self.stock_df.to_excel(w,sheet_name="Stock_Data",index=False)
                 if self.financial_df is not None and not self.financial_df.empty:
-                    self.financial_df.to_excel(w,sheet_name="finance",index=False)
+                    self.financial_df.to_excel(w,sheet_name="Finance_Data",index=False)
                 if self.industry_df is not None and len(self.industry_df) > 0:
                     self.industry_df.to_excel(w,sheet_name="Industry_Avg",index=False)
             auto_close_popup("Success",f"Downloaded!\n{fn}")
