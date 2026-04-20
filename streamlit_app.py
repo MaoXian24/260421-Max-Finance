@@ -411,7 +411,8 @@ def inject_custom_css():
     base = st.get_option("theme.base") or "light"
     section_title_color = "#E7EDF7" if base == "dark" else "#000000"
     table_title_color = "#E7EDF7" if base == "dark" else "#111827"
-    css = """
+    st.markdown(
+        f"""
         <style>
         .mf-section-title {
             font-size: 2rem;
@@ -419,7 +420,7 @@ def inject_custom_css():
             line-height: 1.2;
             margin-top: 1.1rem;
             margin-bottom: 0.7rem;
-            color: __SECTION_TITLE_COLOR__;
+            color: {section_title_color};
             border-left: 6px solid var(--accent);
             padding: 0.18rem 0 0.18rem 0.7rem;
             border-radius: 2px;
@@ -428,7 +429,7 @@ def inject_custom_css():
             font-size: 1.08rem;
             font-weight: 700;
             margin: 0.65rem 0 0.25rem 0;
-            color: __TABLE_TITLE_COLOR__;
+            color: {table_title_color};
         }
         .mf-table-wrap {
             width: 100%;
@@ -464,17 +465,15 @@ def inject_custom_css():
         .mf-table-wrap.industry tbody tr:nth-child(odd) td { background: #EDE9FE; color: #334155; }
         .mf-table-wrap.industry tbody tr:nth-child(even) td { background: #F5F3FF; color: #334155; }
         </style>
-        """
-    css = css.replace("__SECTION_TITLE_COLOR__", section_title_color).replace("__TABLE_TITLE_COLOR__", table_title_color)
-    st.markdown(
-        css,
+        """,
         unsafe_allow_html=True,
     )
 
 
-def render_section_title(number, title, accent_color):
+def render_section_title(number, title, accent_color, text_color=None):
+    extra_style = f" color: {text_color};" if text_color else ""
     st.markdown(
-        f'<div class="mf-section-title" style="--accent: {accent_color};">{number}. {title}</div>',
+        f'<div class="mf-section-title" style="--accent: {accent_color};{extra_style}">{number}. {title}</div>',
         unsafe_allow_html=True,
     )
 
@@ -540,6 +539,7 @@ def render_app():
     inject_custom_css()
     st.title("Max Finance")
     st.caption("Enhanced visualization edition with dynamic metric selectors and 2015-2024 long-range analysis.")
+    section_text_color = "#9CA3AF" if (st.get_option("theme.base") or "light") == "dark" else "#374151"
 
     if "default_ticker" not in st.session_state:
         st.session_state.default_ticker = random.choice(DEFAULT_TICKER_POOL)
@@ -636,7 +636,7 @@ def render_app():
         except Exception:
             current_sic = "-"
 
-    render_section_title(1, "Stock Data Visualization", "#38BDF8")
+    render_section_title(1, "Stock Data Visualization", "#38BDF8", text_color=section_text_color)
     if stock_df is None or stock_df.empty:
         st.write("No pricing data available.")
         if result["stock_reason"]:
@@ -666,7 +666,7 @@ def render_app():
         )
         st.pyplot(stock_fig, clear_figure=True)
 
-    render_section_title(2, "Financial Data Visualization", "#F59E0B")
+    render_section_title(2, "Financial Data Visualization", "#F59E0B", text_color=section_text_color)
     if financial_df is None or financial_df.empty:
         st.write("No data.")
     else:
@@ -698,7 +698,7 @@ def render_app():
         )
         st.pyplot(fin_fig, clear_figure=True)
 
-    render_section_title(3, "Derived Metrics Visualization", "#34D399")
+    render_section_title(3, "Derived Metrics Visualization", "#34D399", text_color=section_text_color)
     if financial_df is None or financial_df.empty:
         st.write("No data.")
     else:
@@ -738,7 +738,7 @@ def render_app():
         )
         st.pyplot(dupont_fig, clear_figure=True)
 
-    render_section_title(4, "SIC Industry Visualization", "#A78BFA")
+    render_section_title(4, "SIC Industry Visualization", "#A78BFA", text_color=section_text_color)
     if industry_df is not None and not industry_df.empty:
         industry_metric_map = {
             "Avg Sale": "avg_sale",
@@ -770,7 +770,7 @@ def render_app():
         if result["industry_reason"]:
             st.caption(f"Reason: {result['industry_reason']}")
 
-    render_section_title(5, "All Data Tables", "#22D3EE")
+    render_section_title(5, "All Data Tables", "#22D3EE", text_color=section_text_color)
     st.caption("Tables are grouped below after the chart sections.")
 
     if info_df is None or info_df.empty:
