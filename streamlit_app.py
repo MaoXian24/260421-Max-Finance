@@ -503,7 +503,7 @@ def build_excel(info_df, stock_df, financial_df, industry_df, ticker, year):
         if stock_df is not None and not stock_df.empty:
             stock_df.to_excel(writer, sheet_name="Stock_Data", index=False)
         if financial_df is not None and not financial_df.empty:
-            financial_df.to_excel(writer, sheet_name="Finance_Data", index=False)
+            financial_df.to_excel(writer, sheet_name="Financial_Data", index=False)
         if industry_df is not None and not industry_df.empty:
             industry_df.to_excel(writer, sheet_name="Industry_Avg", index=False)
     output.seek(0)
@@ -593,7 +593,7 @@ def render_app():
         ticker = st.text_input("Ticker", value=st.session_state.default_ticker).strip().upper()
         year = st.selectbox("Year", YEAR_OPTIONS, index=len(YEAR_OPTIONS) - 1)
         st.caption("Year selector controls stock data only. Financial, DuPont, SIC use full 2015-2024.")
-        run_btn = st.button("Run Analysis", width="stretch")
+        run_btn = st.button("Search", width="stretch")
 
     # Cache credentials in session state; reset previous result when credentials change.
     current_fingerprint = build_credential_fingerprint(wrds_user, wrds_password) if wrds_user and wrds_password else ""
@@ -631,7 +631,7 @@ def render_app():
     result = st.session_state.result
     if result is None:
         if not st.session_state.auth_error:
-            st.info("Enter WRDS credentials and click Run Analysis.")
+            st.info("Ready")
         return
 
     info_df = result["info_df"]

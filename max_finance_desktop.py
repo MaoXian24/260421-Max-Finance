@@ -434,7 +434,7 @@ class StockAnalysisApp:
 
         button_row = tk.Frame(controls_panel, bg=self.panel_bg)
         button_row.grid(row=4, column=0, columnspan=2, pady=(8, 2))
-        self.btn_query = ttk.Button(button_row, text="Query", command=self.start_query)
+        self.btn_query = ttk.Button(button_row, text="Search", command=self.start_query)
         self.btn_query.pack(side=tk.LEFT, padx=6)
         self.btn_download = ttk.Button(button_row, text="Download", command=self.download_data)
         self.btn_download.pack(side=tk.LEFT, padx=6)
@@ -873,7 +873,7 @@ class StockAnalysisApp:
         else:
             self.preview_text.insert("end", "No company profile available.\n\n")
 
-        self.preview_text.insert("end", "2. STOCK DATA (Top 10)\n")
+        self.preview_text.insert("end", "2. Stock Data (Top 30 rows)\n")
         if self.stock_df is not None and not self.stock_df.empty:
             self.preview_text.insert("end", self.stock_df.head(10).to_string(index=False) + "\n\n")
         else:
@@ -946,7 +946,7 @@ class StockAnalysisApp:
                 if self.stock_df is not None and not self.stock_df.empty:
                     self.stock_df.to_excel(w,sheet_name="Stock_Data",index=False)
                 if self.financial_df is not None and not self.financial_df.empty:
-                    self.financial_df.to_excel(w,sheet_name="Finance_Data",index=False)
+                    self.financial_df.to_excel(w,sheet_name="Financial_Data",index=False)
                 if self.industry_df is not None and len(self.industry_df) > 0:
                     self.industry_df.to_excel(w,sheet_name="Industry_Avg",index=False)
             auto_close_popup("Success",f"Downloaded!\n{fn}")
